@@ -120,6 +120,22 @@ Each Dropbox file returns a `launchUrl` — pass it directly as the media URL wh
 7. **Media type detection** — mp4/mov/avi = video, png/jpg/gif = image. The API auto-detects from URL extension
 8. **Multiple ads in one call** — you can pass multiple objects in the `ads` array to launch several ads at once
 
+## Ad Set Capacity (Full Ad Sets)
+
+Before launching, check the `adCount` field from `list_adsets`. Platform limits:
+- **Facebook/Meta**: 50 ads per ad set (150 for automated/Advantage+ campaigns)
+- **TikTok**: 20 ads per ad set
+- **Pinterest**: 500 ads per ad group
+
+If launching N ads would exceed the limit:
+1. Tell the user: "This ad set has X/50 ads. Launching N more would exceed the limit."
+2. Ask: "Want me to find the lowest-performing ads to delete first?"
+3. If yes:
+   - `query_reports` with `groupBy=adId`, `sortBy=spend`, `sortDirection=ASC` filtered to that ad set → find worst performers
+   - Show the user the list with spend/impressions
+   - After user confirms which to delete: `delete_entities` with `entityType="ads"` and the ad IDs
+   - Then proceed with launch
+
 ## Platform-Specific Fields
 
 ### TikTok
