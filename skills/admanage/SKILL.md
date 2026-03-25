@@ -34,11 +34,13 @@ Media can come from multiple sources:
 
 - **User provides a URL** — use directly in the `media` array
 - **User drags a file into chat (Cowork)** — the MCP server is remote and can't access local files. Use this workflow:
-  1. Upload the file to litterbox (temp hosting, auto-expires) using Bash:
-     `curl -F "reqtype=fileupload" -F "time=24h" -F "fileToUpload=@/path/to/file" https://litterbox.catbox.moe/resources/internals/api.php`
-     Returns a URL like `https://litter.catbox.moe/abc123.mp4` (anonymous, no auth, expires in 24h)
-  2. Call `upload_media_from_url` with that litterbox URL to save it permanently to AdManage
-  3. Use the returned `media.admanage.ai` URL in `launch_ads`
+  1. Call `get_upload_url` with the fileName (e.g. "creative.mp4") → returns `{ url: presignedUrl, key: storageKey }`
+  2. PUT the file directly to AdManage storage: `curl -X PUT -T /path/to/file "PRESIGNED_URL"`
+  3. Call `confirm_upload` with `url="https://media.admanage.ai/{key}"` to register in library
+  4. Use the returned `media.admanage.ai` URL in `launch_ads`
+  - **Fallback** if presigned upload fails: Upload to litterbox temp hosting:
+    `curl -F "reqtype=fileupload" -F "time=24h" -F "fileToUpload=@/path/to/file" https://litterbox.catbox.moe/resources/internals/api.php`
+    Then call `upload_media_from_url` with the returned URL
 - **User drags a file into chat (Claude Code)** — use `upload_media_from_file` with the filePath directly
 - **Google Drive** — use `browse_google_drive` to find files, use the `webContentLink` or `downloadUrl`
 - **Dropbox** — use `browse_dropbox` to list files, each has a `launchUrl` ready for launching
