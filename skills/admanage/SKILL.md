@@ -33,14 +33,11 @@ This gives you everything needed to pre-fill the launch. Only ask the user for w
 Media can come from multiple sources:
 
 - **User provides a URL** — use directly in the `media` array
-- **User drags a file into chat (Cowork)** — the MCP server is remote and can't access local files. Use this workflow:
-  1. Call `get_upload_url` with the fileName (e.g. "creative.mp4") → returns `{ url: presignedUrl, key: storageKey }`
-  2. PUT the file directly to AdManage storage: `curl -X PUT -T /path/to/file "PRESIGNED_URL"`
-  3. Call `confirm_upload` with `url="https://media.admanage.ai/{key}"` to register in library
-  4. Use the returned `media.admanage.ai` URL in `launch_ads`
-  - **Fallback** if presigned upload fails: Upload to litterbox temp hosting:
-    `curl -F "reqtype=fileupload" -F "time=24h" -F "fileToUpload=@/path/to/file" https://litterbox.catbox.moe/resources/internals/api.php`
-    Then call `upload_media_from_url` with the returned URL
+- **User drags a file into chat (Cowork)** — the MCP server is remote and can't access local files. Try IN ORDER:
+  1. **Presigned upload** (best): `get_upload_url` → `curl -X PUT -T /path/to/file "PRESIGNED_URL"` → `confirm_upload`
+  2. **Litterbox** (fallback): `curl -F "reqtype=fileupload" -F "time=24h" -F "fileToUpload=@/path/to/file" https://litterbox.catbox.moe/resources/internals/api.php` → `upload_media_from_url`
+  3. **Public URL / cloud**: `upload_media_from_url`, `browse_dropbox`, `browse_google_drive`
+  4. **base64** (last resort, <2MB): `upload_media_from_file` with base64+fileName
 - **User drags a file into chat (Claude Code)** — use `upload_media_from_file` with the filePath directly
 - **Google Drive** — use `browse_google_drive` to find files, use the `webContentLink` or `downloadUrl`
 - **Dropbox** — use `browse_dropbox` to list files, each has a `launchUrl` ready for launching
