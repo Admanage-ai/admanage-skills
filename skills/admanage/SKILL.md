@@ -37,7 +37,6 @@ Media can come from multiple sources:
   1. **Presigned upload** (best): `get_upload_url` → `curl -X PUT -T /path/to/file "PRESIGNED_URL"` → `confirm_upload`
   2. **Litterbox** (fallback): `curl -F "reqtype=fileupload" -F "time=24h" -F "fileToUpload=@/path/to/file" https://litterbox.catbox.moe/resources/internals/api.php` → `upload_media_from_url`
   3. **Public URL / cloud**: `upload_media_from_url`, `browse_dropbox`, `browse_google_drive`
-  4. **base64** (last resort, <2MB): `upload_media_from_file` with base64+fileName
 - **User drags a file into chat (Claude Code)** — use `upload_media_from_file` with the filePath directly
 - **Google Drive** — use `browse_google_drive` to find files, use the `webContentLink` or `downloadUrl`
 - **Dropbox** — use `browse_dropbox` to list files, each has a `launchUrl` ready for launching
