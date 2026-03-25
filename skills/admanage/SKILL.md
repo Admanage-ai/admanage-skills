@@ -33,7 +33,11 @@ This gives you everything needed to pre-fill the launch. Only ask the user for w
 Media can come from multiple sources:
 
 - **User provides a URL** — use directly in the `media` array
-- **User drags a file into chat** — use `upload_media_from_file` first, then use the returned URL
+- **User drags a file into chat (Cowork)** — the MCP server is remote and can't access local files. Use this workflow:
+  1. Upload the file to catbox.moe using Bash: `curl -F "reqtype=fileupload" -F "fileToUpload=@/path/to/file" https://catbox.moe/user/api.php`
+  2. Use the returned catbox URL with `upload_media_from_url` to save it to AdManage
+  3. Use the returned media.admanage.ai URL in `launch_ads`
+- **User drags a file into chat (Claude Code)** — use `upload_media_from_file` with the filePath directly
 - **Google Drive** — use `browse_google_drive` to find files, use the `webContentLink` or `downloadUrl`
 - **Dropbox** — use `browse_dropbox` to list files, each has a `launchUrl` ready for launching
 - **AdManage Library** — use `list_library_assets` or `search_media` to find existing creatives
