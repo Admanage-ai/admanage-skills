@@ -6,7 +6,7 @@ Launch Meta, TikTok, Snapchat, and Pinterest ads, query analytics, browse media 
 
 ### 1. Get your API key
 
-Go to [AdManage Settings > API Keys](https://admanage.ai/settings) and generate an API key (starts with `ak_`).
+Go to [admanage.ai/connect](https://admanage.ai/connect) to get your API key.
 
 ### 2. Add the MCP server
 

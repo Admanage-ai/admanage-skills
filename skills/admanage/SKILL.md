@@ -130,3 +130,4 @@ Each Dropbox file returns a `launchUrl` — pass it directly as the media URL wh
 ## API Documentation
 
 Full endpoint docs: https://api.admanage.ai/llms.txt
+Get your API key: https://admanage.ai/connect
