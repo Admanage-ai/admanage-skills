@@ -10,22 +10,12 @@ Go to [AdManage Settings > API Keys](https://admanage.ai/settings) and generate 
 
 ### 2. Add the MCP server
 
-**Option A: Remote (recommended)**
-
 ```bash
 claude mcp add --transport http admanage https://mcp.admanage.ai/mcp \
   --header "Authorization: Bearer ak_YOUR_API_KEY"
 ```
 
-**Option B: Local (stdio)**
-
-```bash
-claude mcp add admanage \
-  --transport stdio \
-  -- npx tsx packages/mcp-admanage/src/index.ts \
-  --env ADMANAGE_API_KEY=ak_YOUR_API_KEY \
-  --env ADMANAGE_API_URL=https://api.admanage.ai
-```
+Replace `ak_YOUR_API_KEY` with your actual API key from step 1.
 
 ### 3. Install the skill
 
