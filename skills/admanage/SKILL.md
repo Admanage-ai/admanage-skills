@@ -34,8 +34,8 @@ Media can come from multiple sources:
 
 - **User provides a URL** — use directly in the `media` array
 - **User drags a file into chat (Cowork)** — the MCP server is remote and can't access local files. Try IN ORDER:
-  1. **Direct upload** (best): `curl -X POST "https://api.admanage.ai/v1/media/upload" -H "Authorization: Bearer API_KEY" -F "file=@/path/to/file"` — returns media.admanage.ai URL directly
-  2. **Litterbox** (fallback): `curl -F "reqtype=fileupload" -F "time=24h" -F "fileToUpload=@/path/to/file" https://litterbox.catbox.moe/resources/internals/api.php` → `upload_media_from_url`
+  1. **ALWAYS TRY FIRST — AdManage direct upload**: `curl -X POST "https://api.admanage.ai/v1/media/upload" -H "Authorization: Bearer API_KEY" -F "file=@/path/to/file"` — uploads directly and returns media.admanage.ai URL in one step
+  2. **ONLY if #1 fails — Litterbox**: `curl -F "reqtype=fileupload" -F "time=24h" -F "fileToUpload=@/path/to/file" https://litterbox.catbox.moe/resources/internals/api.php` → `upload_media_from_url`
   3. **Public URL / cloud**: `upload_media_from_url`, `browse_dropbox`, `browse_google_drive`
 - **User drags a file into chat (Claude Code)** — use `upload_media_from_file` with the filePath directly
 - **Google Drive** — use `browse_google_drive` to find files, use the `webContentLink` or `downloadUrl`
